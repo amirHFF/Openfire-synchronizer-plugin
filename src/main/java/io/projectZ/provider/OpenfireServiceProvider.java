@@ -6,11 +6,16 @@ package io.projectZ.provider;
 */
 
 import io.projectZ.dto.UserEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jivesoftware.openfire.XMPPServer;
+import org.jivesoftware.openfire.user.User;
 import org.jivesoftware.openfire.user.UserManager;
 import org.jivesoftware.openfire.user.UserNotFoundException;
 
-public class OpenfireServiceProvider {
+public class OpenfireServiceProvider implements OpenFireAdminService{
+    private final Logger logger = LogManager.getLogger(OpenfireServiceProvider.class);
+    private final String jidPostFix="@Zchat.ir";
     private UserManager manager =XMPPServer.getInstance().getUserManager();
 
     public void createUser(UserEvent event) {
@@ -34,8 +39,24 @@ public class OpenfireServiceProvider {
         }
     }
 
-    public void updateUser(UserEvent userEvent){
-        throw new UnsupportedOperationException("we do not support update user yet");
+
+    @Override
+    public void changeEmail(UserEvent userEvent) {
+        User user = getUser(userEvent);
+        if (user!=null){
+            user.setEmail(user.getEmail());
+        }
+    }
+
+    private User getUser(UserEvent userEvent){
+        User user = null;
+        try {
+            user = UserManager.getInstance().getUser(userEvent.getUsername().concat(jidPostFix));
+        } catch (UserNotFoundException e) {
+            logger.error("get user throw exception : " , e);
+            return null;
+        }
+        return user;
     }
 
 
