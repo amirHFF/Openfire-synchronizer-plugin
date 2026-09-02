@@ -5,36 +5,77 @@ package io.projectZ.dto;
   Created : 7/12/2026 - 11:24 PM
 */
 
-import java.time.Instant;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.time.Instant;
+import java.util.Map;
+
+@JsonInclude(value = JsonInclude.Include.NON_ABSENT)
 public class UserEvent {
 
-    private String eventId;
+    private String id;
+    private long occurredAt;
+    private String realmId;
+    private Map<String , String> details;
 
+    private UserInfo userInfo;
+    private boolean userEvent;
+    private String userid;
     private UserEventType eventType;
+    private String clientId;
 
-    private String userId;
+    private String resourceType;
+    private String resourceId;
+    private String operationType;
+    private AuthDetails authDetails;
 
-    private String username;
 
-    private String password;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    private boolean enabled;
-
-    private Instant timestamp;
-
-    public String getEventId() {
-        return eventId;
+    public String getId() {
+        return id;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public long getOccurredAt() {
+        return occurredAt;
+    }
+
+    public void setOccurredAt(long occurredAt) {
+        this.occurredAt = occurredAt;
+    }
+
+    public String getRealmId() {
+        return realmId;
+    }
+
+    public void setRealmId(String realmId) {
+        this.realmId = realmId;
+    }
+
+    public Map<String, String> getDetails() {
+        return details;
+    }
+
+    public void setDetails(Map<String, String> details) {
+        this.details = details;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public UserEventType getEventType() {
@@ -45,68 +86,70 @@ public class UserEvent {
         this.eventType = eventType;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getResourceType() {
+        return resourceType;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
     }
 
-    public String getPassword() {
-        return password;
+    public String getResourceId() {
+        return resourceId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getOperationType() {
+        return operationType;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
     }
 
-    public String getLastName() {
-        return lastName;
+    public AuthDetails getAuthDetails() {
+        return authDetails;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setAuthDetails(AuthDetails authDetails) {
+        this.authDetails = authDetails;
     }
 
-    public String getEmail() {
-        return email;
+    public boolean isUserEvent() {
+        return userEvent;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserEvent(boolean userEvent) {
+        this.userEvent = userEvent;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
+    @Override
+    public String toString() {
+        return "UserEvent{" +
+                "id='" + id + '\'' +
+                ", occurredAt=" + occurredAt +
+                ", realmId='" + realmId + '\'' +
+                ", details=" + details +
+                ", userInfo=" + userInfo +
+                ", userid='" + userid + '\'' +
+                ", eventType=" + eventType +
+                ", clientId='" + clientId + '\'' +
+                ", resourceType='" + resourceType + '\'' +
+                ", resourceId='" + resourceId + '\'' +
+                ", operationType='" + operationType + '\'' +
+                ", authDetails=" + authDetails +
+                '}';
     }
 }
 

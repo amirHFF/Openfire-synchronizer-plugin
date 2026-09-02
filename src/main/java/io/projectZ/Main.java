@@ -2,6 +2,7 @@ package io.projectZ;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        ZChatUserSyncPlugin plugin = new ZChatUserSyncPlugin();
+        plugin.initializePlugin(null , null);
     }
 }

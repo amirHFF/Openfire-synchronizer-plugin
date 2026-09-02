@@ -7,19 +7,27 @@ package io.projectZ.kafka;
 
 import io.projectZ.dto.UserEvent;
 import io.projectZ.provider.OpenFireAdminService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EventHandler {
-    private final OpenFireAdminService openFireAdminService ;
+    Logger logger = LogManager.getLogger(EventHandler.class);
+    private final OpenFireAdminService openFireAdminService;
 
     public EventHandler(OpenFireAdminService openFireAdminService) {
         this.openFireAdminService = openFireAdminService;
     }
 
-    public void handle(UserEvent userEvent){
+    public void handle(UserEvent userEvent) {
 
-        switch (userEvent.getEventType()){
-            case USER_CREATED -> openFireAdminService.createUser(userEvent);
-            case USER_DELETED -> openFireAdminService.deleteUser(userEvent);
+        switch (userEvent.getEventType()) {
+            case REGISTER -> openFireAdminService.createUser(userEvent);
+
+            case DELETE_ACCOUNT -> openFireAdminService.deleteUser(userEvent);
+
+            case UPDATE_EMAIL -> openFireAdminService.changeEmail(userEvent);
+
+            default -> logger.info("no handler event found for type {} and id {} " ,userEvent.getEventType() , userEvent.getId());
         }
     }
 

@@ -16,27 +16,43 @@ import org.jivesoftware.openfire.user.UserNotFoundException;
 public class OpenfireServiceProvider implements OpenFireAdminService{
     private final Logger logger = LogManager.getLogger(OpenfireServiceProvider.class);
     private final String jidPostFix="@Zchat.ir";
-    private UserManager manager =XMPPServer.getInstance().getUserManager();
+//    private UserManager manager =XMPPServer.getInstance().getUserManager();
+    private UserManager manager = null;
 
     public void createUser(UserEvent event) {
+        logger.info("creating user in openfire ..");
+        if (event.getUserInfo() == null){
+            throw new IllegalArgumentException("user info is empty inside user event");
+        }
         try {
+            String fullName = (event.getDetails().get("first_name") !=null &&
+                    event.getDetails().get("last_name") !=null) ? event.getDetails().get("firstname").concat(" ")
+                    .concat(event.getDetails().get("lastname")) : event.getUserInfo().getUsername();
             manager.createUser(
-                    event.getUsername(),
-                    event.getPassword(),
-                    event.getFirstName()+" "+event.getLastName(),
-                    event.getEmail()
+                    event.getUserInfo().getUsername(),
+                    "xxx",
+                    event.getUserInfo().getUsername(),
+                    event.getUserInfo().getEmail()
             );
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        logger.info("user created successfully");
     }
 
     public void deleteUser(UserEvent userEvent){
+        logger.info("removing user in openfire ..");
+
+        if (userEvent.getUserInfo() == null){
+            throw new IllegalArgumentException("user info is empty inside user event");
+        }
         try {
-            manager.deleteUser(manager.getUser(userEvent.getUsername()));
+            manager.deleteUser(manager.getUser(userEvent.getUserInfo().getUsername()));
         } catch (UserNotFoundException e) {
             throw new RuntimeException(e);
         }
+        logger.info("user removed");
+
     }
 
 
@@ -51,7 +67,7 @@ public class OpenfireServiceProvider implements OpenFireAdminService{
     private User getUser(UserEvent userEvent){
         User user = null;
         try {
-            user = UserManager.getInstance().getUser(userEvent.getUsername().concat(jidPostFix));
+            user = UserManager.getInstance().getUser(userEvent.getUserInfo().getUsername());
         } catch (UserNotFoundException e) {
             logger.error("get user throw exception : " , e);
             return null;
